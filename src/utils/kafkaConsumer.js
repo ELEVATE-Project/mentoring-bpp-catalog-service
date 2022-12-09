@@ -9,11 +9,10 @@ exports.consume = async () => {
 		await consumer.connect()
 		await consumer.subscribe({ topics: [process.env.KAFKA_SESSION_TOPIC] })
 		await consumer.run({
-			eachMessage: async ({ message }) => {
+			eachMessage: async ({ topic, partition, message }) => {
 				const value = JSON.parse(message.value)
-				console.log('message:', value)
-				const topic = value.topic
-				delete value.topic
+                console.log('Message: ', value)
+                console.log('TOPIC: ', topic)
 				if (topic === process.env.KAFKA_SESSION_TOPIC) await kafkaProducers.session(value)
 			},
 		})
