@@ -1,25 +1,20 @@
 'use strict'
 const { Kafka } = require('kafkajs')
-const kafka = new Kafka({ clientId: process.env.KAFKA_CLIENT_ID, brokers: process.env.KAFKA_BROKERS.split(' ') })
+const kafka = new Kafka({ clientId: process.env.KAFKA_CLIENT_ID, brokers: process.env.KAFKA_BROKERS.split(',') })
 const producer = kafka.producer()
+
+producer.on('producer.connect', () => console.log('Kafka Producer Connected'))
+producer.on('producer.disconnect', () => console.log('Kafka Producer Disconnected'))
+//producer.on('producer.network.request', (request) => console.log('Producer Request: ', request))
 
 const produce = (topic) => async (data) => {
 	try {
-        console.log('HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
-        console.log('PRODUCER TOPIC: ', topic)
-        console.log('data: ', data)
+		console.log('PRODUCER TOPIC: ', topic)
+		console.log('PRODUCER DATA: ', data)
 		//data.topic = topic
 		await producer.connect()
 		await producer.send({
 			topic,
-			messages: [
-				{
-					value: JSON.stringify(data),
-				},
-			],
-		})
-        await producer.send({
-			topic:'mentoring-sessions-3',
 			messages: [
 				{
 					value: JSON.stringify(data),
@@ -35,3 +30,5 @@ const produce = (topic) => async (data) => {
 exports.kafkaProducers = {
 	session: produce(process.env.KAFKA_SESSION_TOPIC_ELASTIC),
 }
+
+exports.initialize = async () => await producer.connect()
