@@ -12,7 +12,7 @@ const produce = (topic) => async (data) => {
 		console.log('PRODUCER TOPIC: ', topic)
 		console.log('PRODUCER DATA: ', data)
 		//data.topic = topic
-		await producer.connect()
+		//await producer.connect() //Add this back if producer ever gets garbage collected. Unlikely
 		await producer.send({
 			topic,
 			messages: [
@@ -31,4 +31,5 @@ exports.kafkaProducers = {
 	session: produce(process.env.KAFKA_SESSION_TOPIC_ELASTIC),
 }
 
-exports.initialize = async () => await producer.connect()
+exports.initialize = () =>
+	producer.connect().catch((error) => console.log('Kafka Producer Initialization Error: ', error))
