@@ -3,13 +3,14 @@
 exports.sessionToESTransformer = (session) => {
 	const categoryId = Math.random().toString(36).slice(2)
 	const fulfillmentIds = [Math.random().toString(36).slice(2), Math.random().toString(36).slice(2)]
-	return {
+	const esObject = {
+		SCREAM: "I AM SCREAMING, IF THIS IS THE FIRST UPDATE! I SHOULD ALWAYS SCREAM. SCREAM SHOULDN'T BE REMOVED EVER",
 		category: {
 			id: categoryId,
 			description: session.categories[0].label,
 			descriptor: {
-				name: session.categories[0].label,
-				code: session.categories[0].label
+				name: session.categories[0]?.label,
+				code: session.categories[0]?.label
 					.split(' ')
 					.map((word) => word[0])
 					.join(''),
@@ -25,7 +26,7 @@ exports.sessionToESTransformer = (session) => {
 			category_id: categoryId,
 			descriptor: {
 				name: session.title,
-				code: session.title.replace(/\s+/g, '-').toUpperCase(),
+				code: session.title?.replace(/\s+/g, '-').toUpperCase(),
 				short_desc: session.description,
 				long_desc: session.description,
 				images: session.image,
@@ -37,7 +38,7 @@ exports.sessionToESTransformer = (session) => {
 			tags: [
 				{
 					recommended_for: [
-						session.recommendedFor.map((targetAudience) => {
+						session.recommendedFor?.map((targetAudience) => {
 							return targetAudience.label
 						}),
 					],
@@ -48,7 +49,7 @@ exports.sessionToESTransformer = (session) => {
 			return {
 				id,
 				type: 'ONLINE',
-				language: session.medium.map((lang) => {
+				language: session.medium?.map((lang) => {
 					return lang.label
 				}),
 				descriptor: {
@@ -86,4 +87,9 @@ exports.sessionToESTransformer = (session) => {
 			}
 		}),
 	}
+	if (esObject.category.descriptor.code == 'ML') {
+		delete esObject.SCREAM
+		delete esObject.session.tags
+	}
+	return esObject
 }
