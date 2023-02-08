@@ -51,10 +51,10 @@
 	},
 	"_moduleAliases": {
 		"@root": ".",
+		"@configs": "configs",
 		"@controllers": "controllers",
 		"@database": "database",
 		"@routes": "routes",
-		"@configs": "configs",
 		"@utils": "utils",
 		"@tests": "tests",
 		"@middlewares": "middlewares",

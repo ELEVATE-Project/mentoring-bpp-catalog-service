@@ -1,6 +1,7 @@
 'use strict'
 require('module-alias/register')
 require('dotenv').config()
+require('@configs/kafka')
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -8,8 +9,7 @@ const cors = require('cors')
 const app = express()
 /* require('@utils/kafkaProducer').initialize()
 require('@utils/kafkaConsumer').initialize() */
-const { consumer, producer } = require('@configs/kafka')
-consumer.app.use(bodyParser.urlencoded({ extended: true, limit: '50MB' }))
+app.use(bodyParser.urlencoded({ extended: true, limit: '50MB' }))
 app.use(bodyParser.json({ limit: '50MB' }))
 app.use(cors())
 app.use(process.env.ROOT_ROUTE, require('@routes'))
