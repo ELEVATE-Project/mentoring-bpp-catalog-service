@@ -5,6 +5,8 @@ const search = async (query) => {
 	return await client.search({
 		index: process.env.ELASTIC_SESSION_INDEX,
 		query,
+		from: 0,
+		size: 20,
 	})
 }
 
