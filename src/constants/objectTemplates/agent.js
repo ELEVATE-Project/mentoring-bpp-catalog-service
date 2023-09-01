@@ -35,9 +35,5 @@ exports.agentTemplate = {
 		state: '=> stateCreator()',
 		capacity: '=> capacityCreator()',
 		facilities: '=> facilitiesCreator()',
-		orgName: '{{organization.name}}',
-		date: '{{startDateUtc}}',
-		sessionId: '{{_id}}',
-		fulfillment_ids: ['{{fulfillmentId}}'],
 	},
 }
