@@ -3,14 +3,14 @@ const providerQueries = require('@database/indexing/provider/queries')
 const { getFulfillmentAndAgentObjects } = require('@helpers/fulfillmentAndAgentObjects')
 const { getSourceObject } = require('@utils/generic')
 
-exports.getprotocolObjectsFromSessions = async (sessions) => {
+exports.getprotocolObjectsFromSessions = async (sessions, time) => {
 	try {
 		const result = await Promise.all(
 			sessions.map(async (sessionDoc) => {
 				const session = sessionDoc._source //Use Generic Function Here
 				const providerDoc = await providerQueries.findById(session.providerId)
 				const provider = providerDoc._source //Use Generic Function Here
-				const { fulfillment, agent } = await getFulfillmentAndAgentObjects(session.fulfillment_ids[0])
+				const { fulfillment, agent } = await getFulfillmentAndAgentObjects(session.fulfillment_ids[0], time)
 				return {
 					session,
 					provider,

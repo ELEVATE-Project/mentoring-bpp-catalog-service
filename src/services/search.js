@@ -51,7 +51,7 @@ const searchByRoomFilters = async (requestBody) => {
 	const seatsNeeded = room.item?.quantity?.maximum?.count
 	const state = room.fulfillment?.agent?.person?.state
 	const facilities = room.fulfillment.agent.person?.tags[0].list
-	console.log('THINGS:', roomName, instituteName, seatsNeeded, state, facilities)
+	/* console.log('THINGS:', roomName, instituteName, seatsNeeded, state, facilities)
 	console.log('Room Name: ', roomName)
 	console.log('institute Name: ', instituteName)
 	console.log('seatsNeeded: ', seatsNeeded)
@@ -60,7 +60,7 @@ const searchByRoomFilters = async (requestBody) => {
 	console.log(
 		'QUERY: ',
 		JSON.stringify(roomSearchQueryGenerator(roomName, instituteName, seatsNeeded, state, facilities), null, 3)
-	)
+	) */
 	const roomQuery = roomSearchQueryGenerator(roomName, instituteName, seatsNeeded, state, facilities)
 	const result = await agentQueries.findRooms(roomQuery)
 	if (!getCount(result)) return null
@@ -73,7 +73,7 @@ const searchByRoomFilters = async (requestBody) => {
 			else return getDocs(sessionsResult)
 		})
 	)
-	console.log(await flattenArrayOfArrays(sessionsArray))
+	//console.log(await flattenArrayOfArrays(sessionsArray))
 	return await flattenArrayOfArrays(sessionsArray)
 }
 
@@ -89,7 +89,8 @@ exports.search = async (requestBody) => {
 	} else if (requestBody.intent.room) {
 		sessionDocs = await searchByRoomFilters(requestBody)
 	}
-	const protocolObjects = sessionDocs ? await getprotocolObjectsFromSessions(sessionDocs) : null
+	const time = requestBody.intent.room?.item?.time?.timestamp
+	const protocolObjects = sessionDocs ? await getprotocolObjectsFromSessions(sessionDocs, time) : null
 	//Handle these cases where any of the elasticsearch results can turn up empty.
 	return await protocolResponseDTO(protocolObjects)
 }
