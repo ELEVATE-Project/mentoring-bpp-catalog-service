@@ -57,7 +57,10 @@ const searchByRoomFilters = async (requestBody) => {
 	console.log('seatsNeeded: ', seatsNeeded)
 	console.log('state', state)
 	console.log('facilities ', facilities)
-	console.log('QUERY: ', roomSearchQueryGenerator(roomName, instituteName, seatsNeeded, state, facilities))
+	console.log(
+		'QUERY: ',
+		JSON.stringify(roomSearchQueryGenerator(roomName, instituteName, seatsNeeded, state, facilities), null, 3)
+	)
 }
 
 exports.search = async (requestBody) => {
