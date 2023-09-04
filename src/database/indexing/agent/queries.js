@@ -2,6 +2,7 @@
 const { client } = require('@configs/elasticsearch')
 
 const search = async (query) => {
+	console.log('QUERY: ', query)
 	return await client.search({
 		index: process.env.ELASTIC_AGENT_INDEX,
 		query,
