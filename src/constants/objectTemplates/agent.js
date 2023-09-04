@@ -165,7 +165,7 @@ const descriptionCreator = (name) => {
 	console.log(description)
 	if (!description)
 		return 'This room provides a versatile space for various activities, fostering collaboration, creativity, and learning. It serves as a hub for individuals to engage in diverse pursuits, from academic endeavors to artistic expression and intellectual discussions.'
-	description
+	return description
 }
 
 exports.agentHandlers = {
