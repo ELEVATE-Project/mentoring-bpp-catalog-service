@@ -12,7 +12,7 @@ const findById = async (id, time) => {
 	startDate.setHours(0, 0, 0, 0)
 	const endDate = new Date(end)
 	endDate.setHours(0, 0, 0, 0)
-	if (checkDate >= startDate && checkDate <= endDate) return fulfillmentDocument
+	if (checkDate >= startDate && checkDate <= endDate) return response
 	else return null
 }
 
