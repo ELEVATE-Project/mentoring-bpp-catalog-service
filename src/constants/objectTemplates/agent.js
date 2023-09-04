@@ -184,6 +184,6 @@ exports.agentTemplate = {
 		capacity: '=> capacityCreator()',
 		facilities: '=> facilitiesCreator()',
 		institute: '{{organization.name}}',
-		description: '=> descriptionCreator(mentor.name)',
+		description: '=> descriptionCreator({{mentor.name}})',
 	},
 }
