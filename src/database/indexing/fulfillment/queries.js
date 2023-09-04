@@ -13,6 +13,7 @@ const findById = async (id, time) => {
 	startDate.setHours(0, 0, 0, 0)
 	const endDate = new Date(end)
 	endDate.setHours(0, 0, 0, 0)
+	console.log(startDate, endDate, checkDate)
 	if (checkDate >= startDate && checkDate <= endDate) return response
 	else return null
 }
