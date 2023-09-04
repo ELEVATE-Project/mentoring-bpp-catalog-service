@@ -11,6 +11,7 @@ exports.getprotocolObjectsFromSessions = async (sessions, time) => {
 				const providerDoc = await providerQueries.findById(session.providerId)
 				const provider = providerDoc._source //Use Generic Function Here
 				const { fulfillment, agent } = await getFulfillmentAndAgentObjects(session.fulfillment_ids[0], time)
+				if (fulfillment === null) return null
 				return {
 					session,
 					provider,
@@ -19,7 +20,7 @@ exports.getprotocolObjectsFromSessions = async (sessions, time) => {
 				}
 			})
 		)
-		return result
+		return result.filter((item) => item !== null)
 	} catch (err) {
 		console.log(err)
 		throw err
