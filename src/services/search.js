@@ -23,6 +23,16 @@ const searchByPersonName = async (requestBody) => {
 	return await flattenArrayOfArrays(sessionsArray)
 }
 
+const searchByRoomFilters = async (requestBody) => {
+	const room = requestBody.intent.room
+	const roomName = room.fulfillment.agent.person?.name
+	const instituteName = room.fulfillment?.agent?.organization?.descriptor?.name
+	const seatsNeeded = room.item?.quantity?.maximum?.count
+	const state = room.fulfillment?.agent?.person?.state
+	const facilities = room.fulfillment.agent.person?.tags[0].list
+	console.log('THINGS:', roomName, instituteName, seatsNeeded, state, facilities)
+}
+
 exports.search = async (requestBody) => {
 	let sessionDocs
 	if (requestBody.intent.item?.descriptor?.name) {
@@ -32,6 +42,8 @@ exports.search = async (requestBody) => {
 		sessionDocs = getDocs(result)
 	} else if (requestBody.intent.agent?.person?.name) {
 		sessionDocs = await searchByPersonName(requestBody)
+	} else if (requestBody.intent.room) {
+		sessionDocs = await searchByRoomFilters(requestBody)
 	}
 	const protocolObjects = sessionDocs ? await getprotocolObjectsFromSessions(sessionDocs) : null
 	//Handle these cases where any of the elasticsearch results can turn up empty.
