@@ -3,6 +3,7 @@ const { client } = require('@configs/elasticsearch')
 
 const findById = async (id, time) => {
 	const response = await client.get({ index: process.env.ELASTIC_FULFILLMENT_INDEX, id })
+	console.log('FIND BY ID RESPONSE: ', response)
 	const fulfillmentDocument = response._source
 	if (!fulfillmentDocument || !fulfillmentDocument.time) return null
 	const { start, end } = fulfillmentDocument.time.range
