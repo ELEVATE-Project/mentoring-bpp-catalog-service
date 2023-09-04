@@ -23,6 +23,27 @@ const searchByPersonName = async (requestBody) => {
 	return await flattenArrayOfArrays(sessionsArray)
 }
 
+const roomSearchQueryGenerator = (roomName, instituteName, seatsNeeded, state, facilities) => {
+	let capacityRange = {}
+	if (seatsNeeded === 50) capacityRange = { gte: 0, lte: 50 }
+	else if (seatsNeeded === 100) capacityRange = { gt: 50, lte: 100 }
+	else if (seatsNeeded === 200) capacityRange = { gt: 100, lte: 200 }
+	else if (seatsNeeded === 300) capacityRange = { gt: 200 }
+	const mustConditions = [{ range: { 'person.capacity': capacityRange } }, { match: { 'person.state': state } }]
+	if (roomName) mustConditions.push({ match: { 'person.name': roomName } })
+	if (instituteName) mustConditions.push({ match: { 'person.institute': instituteName } })
+	const facilitiesConditions = facilities.map((facility) => ({ term: { 'person.facilities': facility } }))
+	mustConditions.push(...facilitiesConditions)
+	const query = {
+		query: {
+			bool: {
+				must: mustConditions,
+			},
+		},
+	}
+	return query
+}
+
 const searchByRoomFilters = async (requestBody) => {
 	const room = requestBody.intent.room
 	const roomName = room.fulfillment.agent.person?.name
@@ -36,6 +57,7 @@ const searchByRoomFilters = async (requestBody) => {
 	console.log('seatsNeeded: ', seatsNeeded)
 	console.log('state', state)
 	console.log('facilities ', facilities)
+	console.log('QUERY: ', roomSearchQueryGenerator(roomName, instituteName, seatsNeeded, state, facilities))
 }
 
 exports.search = async (requestBody) => {
