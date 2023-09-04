@@ -6,10 +6,13 @@ const findById = async (id, time) => {
 	const fulfillmentDocument = response.body._source
 	if (!fulfillmentDocument || !fulfillmentDocument.time) return null
 	const { start, end } = fulfillmentDocument.time.range
-	const checkTime = new Date(time)
-	const startTime = new Date(start)
-	const endTime = new Date(end)
-	if (checkTime >= startTime && checkTime <= endTime) return fulfillmentDocument
+	const checkDate = new Date(time)
+	checkDate.setHours(0, 0, 0, 0)
+	const startDate = new Date(start)
+	startDate.setHours(0, 0, 0, 0)
+	const endDate = new Date(end)
+	endDate.setHours(0, 0, 0, 0)
+	if (checkDate >= startDate && checkDate <= endDate) return fulfillmentDocument
 	else return null
 }
 
