@@ -35,5 +35,6 @@ exports.agentTemplate = {
 		state: '=> stateCreator()',
 		capacity: '=> capacityCreator()',
 		facilities: '=> facilitiesCreator()',
+		institute: '{{organization.name}}',
 	},
 }
