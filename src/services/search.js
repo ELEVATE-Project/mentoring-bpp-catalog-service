@@ -31,6 +31,11 @@ const searchByRoomFilters = async (requestBody) => {
 	const state = room.fulfillment?.agent?.person?.state
 	const facilities = room.fulfillment.agent.person?.tags[0].list
 	console.log('THINGS:', roomName, instituteName, seatsNeeded, state, facilities)
+	console.log('Room Name: ', roomName)
+	console.log('institute Name: ', instituteName)
+	console.log('seatsNeeded: ', seatsNeeded)
+	console.log('state', state)
+	console.log('facilities ', facilities)
 }
 
 exports.search = async (requestBody) => {
