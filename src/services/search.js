@@ -73,6 +73,7 @@ const searchByRoomFilters = async (requestBody) => {
 			else return getDocs(sessionsResult)
 		})
 	)
+	console.log(await flattenArrayOfArrays(sessionsArray))
 	return await flattenArrayOfArrays(sessionsArray)
 }
 
