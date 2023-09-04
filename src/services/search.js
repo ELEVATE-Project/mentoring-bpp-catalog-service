@@ -61,6 +61,19 @@ const searchByRoomFilters = async (requestBody) => {
 		'QUERY: ',
 		JSON.stringify(roomSearchQueryGenerator(roomName, instituteName, seatsNeeded, state, facilities), null, 3)
 	)
+	const roomQuery = roomSearchQueryGenerator(roomName, instituteName, seatsNeeded, state, facilities)
+	const result = await agentQueries.findRooms(roomQuery)
+	if (!getCount(result)) return null
+	const agentDocs = getDocs(result)
+	const sessionsArray = await Promise.all(
+		agentDocs.map(async (agentDoc) => {
+			const agent = getSourceObject(agentDoc)
+			const sessionsResult = await sessionQueries.findByAgentId(agent.person.id)
+			if (!getCount(sessionsResult)) return []
+			else return getDocs(sessionsResult)
+		})
+	)
+	return await flattenArrayOfArrays(sessionsArray)
 }
 
 exports.search = async (requestBody) => {

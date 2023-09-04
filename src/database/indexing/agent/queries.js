@@ -25,6 +25,14 @@ const findByName = async (agentName) => {
 	}
 }
 
-const agentQueries = { findById, findByName }
+const findRooms = async (query) => {
+	try {
+		const result = await search(query)
+		return result
+	} catch (err) {
+		console.log(err)
+	}
+}
+const agentQueries = { findById, findByName, findRooms }
 
 module.exports = agentQueries
