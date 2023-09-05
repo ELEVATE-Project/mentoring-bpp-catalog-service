@@ -29,11 +29,16 @@ const roomSearchQueryGenerator = (roomName, instituteName, seatsNeeded, state, f
 	else if (seatsNeeded === 100) capacityRange = { gt: 50, lte: 100 }
 	else if (seatsNeeded === 200) capacityRange = { gt: 100, lte: 200 }
 	else if (seatsNeeded === 300) capacityRange = { gt: 200 }
-	const mustConditions = [{ range: { 'person.capacity': capacityRange } }, { match: { 'person.state': state } }]
+	const mustConditions = []
+	if (capacityRange && Object.keys(capacityRange).length > 0)
+		mustConditions.push({ range: { 'person.capacity': capacityRange } })
+	if (state) mustConditions.push({ match: { 'person.state': state } })
 	if (roomName) mustConditions.push({ match: { 'person.name': roomName } })
 	if (instituteName) mustConditions.push({ match: { 'person.institute': instituteName } })
-	const facilitiesConditions = facilities.map((facility) => ({ term: { 'person.facilities': facility } }))
-	mustConditions.push(...facilitiesConditions)
+	if (facilities && facilities.length > 0) {
+		const facilitiesConditions = facilities.map((facility) => ({ term: { 'person.facilities': facility } }))
+		mustConditions.push(...facilitiesConditions)
+	}
 	const query = {
 		query: {
 			bool: {
@@ -50,7 +55,7 @@ const searchByRoomFilters = async (requestBody) => {
 	const instituteName = room.fulfillment?.agent?.organization?.descriptor?.name
 	const seatsNeeded = room.item?.quantity?.maximum?.count
 	const state = room.fulfillment?.agent?.person?.state
-	const facilities = room.fulfillment.agent.person?.tags[0].list
+	const facilities = room.fulfillment.agent.person?.tags[0]?.list
 	/* console.log('THINGS:', roomName, instituteName, seatsNeeded, state, facilities)
 	console.log('Room Name: ', roomName)
 	console.log('institute Name: ', instituteName)
