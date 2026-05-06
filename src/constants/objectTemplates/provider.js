@@ -1,7 +1,7 @@
 'use strict'
 
 exports.providerTemplate = {
-	id: '{{organization._id}}',
+	id: '{{organization.id}}',
 	descriptor: {
 		name: '{{organization.name}}',
 		code: '{{organization.code}}',

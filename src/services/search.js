@@ -27,6 +27,7 @@ exports.search = async (requestBody) => {
 	let sessionDocs
 	if (requestBody.intent.item?.descriptor?.name) {
 		const sessionName = requestBody.intent.item.descriptor.name
+
 		const result = await sessionQueries.findByName(sessionName)
 		if (!getCount(result)) return null
 		sessionDocs = getDocs(result)
@@ -34,6 +35,8 @@ exports.search = async (requestBody) => {
 		sessionDocs = await searchByPersonName(requestBody)
 	}
 	const protocolObjects = sessionDocs ? await getprotocolObjectsFromSessions(sessionDocs) : null
+	console.log('::::::::--:::::::::', protocolObjects)
+
 	//Handle these cases where any of the elasticsearch results can turn up empty.
 	return await protocolResponseDTO(protocolObjects)
 }
@@ -44,6 +47,7 @@ exports.getFulfillment = async (fulfillmentId) => {
 }
 
 exports.getSession = async (sessionId, getAllProtocolObjects) => {
+	console.log('::::::::--:::::::::', sessionId)
 	const sessionDoc = await sessionQueries.findById(sessionId)
 	if (!sessionDoc.found) return null
 	if (!getAllProtocolObjects) return getSourceObject(sessionDoc)

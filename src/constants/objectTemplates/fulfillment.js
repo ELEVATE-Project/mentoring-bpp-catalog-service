@@ -10,7 +10,7 @@ exports.fulfillmentTemplate = {
 	id: '{{fulfillmentId}}',
 	type: 'ONLINE',
 	language: '=> languageExtractor(medium)',
-	agentId: '{{mentor._id}}',
+	agentId: '{{mentor.user_id}}',
 	tags: [
 		{
 			display: false,

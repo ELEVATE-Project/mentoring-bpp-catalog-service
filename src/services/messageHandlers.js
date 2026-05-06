@@ -10,11 +10,13 @@ const sessionCreation = async (value) => {
 		//const sessionImage = value.image[0]
 		value.image = faker.image.abstract() + '?random=' + faker.random.alphaNumeric(10) //Refactor this away as soon as possible. Band-aid Solution
 		const { agent, fulfillment, session, provider } = await sessionToESTransformer(value)
+
+		console.log('Value:::::::', provider)
 		Promise.all([
-			kafkaProducers.session(value._id, session),
+			kafkaProducers.session(value.id.toString(), session),
 			kafkaProducers.fulfillment(value.fulfillmentId, fulfillment),
-			kafkaProducers.agent(value.mentor._id, agent),
-			kafkaProducers.provider(value.organization._id, provider),
+			kafkaProducers.agent(value.mentor.user_id, agent),
+			kafkaProducers.provider(value.organization.id, provider),
 		])
 			.then(() => {
 				console.log('Session Objects Passed To Producer Successfully')

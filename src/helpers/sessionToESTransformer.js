@@ -1,10 +1,13 @@
 'use strict'
-const { objectTransformers } = require('@helpers/objectTransformers')
+const objectTransformers = require('@helpers/objectTransformers')
 
 exports.sessionToESTransformer = async (sessionObject) => {
-	const agent = await objectTransformers.agent(sessionObject)
-	const fulfillment = await objectTransformers.fulfillment(sessionObject)
-	const session = await objectTransformers.session(sessionObject)
-	const provider = await objectTransformers.provider(sessionObject)
+	const [agent, fulfillment, session, provider] = await Promise.all([
+		objectTransformers.objectTransformer(sessionObject, 'mentoring-script', 'agentTemplate'),
+		objectTransformers.objectTransformer(sessionObject, 'mentoring-script', 'fulfillmentTemplate'),
+		objectTransformers.objectTransformer(sessionObject, 'mentoring-script', 'sessionTemplate'),
+		objectTransformers.objectTransformer(sessionObject, 'mentoring-script', 'organizationTemplate'),
+	])
+
 	return { agent, fulfillment, session, provider }
 }

@@ -104,7 +104,7 @@ exports.sessionHandlers = {
 }
 
 exports.sessionTemplate = {
-	id: '{{_id}}',
+	id: '{{id}}',
 	categories: [
 		'{{categories}}',
 		{
@@ -116,8 +116,8 @@ exports.sessionTemplate = {
 		},
 	],
 	category_ids: '=> categoryIdExtractor(categories)', //Look for category_ids plural
-	providerId: '{{organization._id}}',
-	agentId: '{{mentor._id}}',
+	providerId: '{{organization.id}}',
+	agentId: '{{mentor.user_id}}',
 	descriptor: {
 		name: '{{title}}',
 		code: '{{title}}', //This needs modification

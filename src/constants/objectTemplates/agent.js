@@ -2,7 +2,7 @@
 
 exports.agentTemplate = {
 	person: {
-		id: '{{mentor._id}}',
+		id: '{{mentor.user_id}}',
 		name: '{{mentor.name}}',
 		image: {
 			url: '{{mentor.image}}',

@@ -5,18 +5,19 @@ const { producer } = require('@configs/kafka')
 
 exports.produce = (topic) => async (key, value) => {
 	try {
-		console.log('PRODUCER KEY: ', key)
+		console.log('PRODUCER KEY: ', typeof key)
 		console.log('PRODUCER TOPIC: ', topic)
 		console.log('PRODUCER DATA: ', JSON.stringify(value, null, 4))
 		const res = await producer.send({
 			topic,
 			messages: [
 				{
-					key: key,
+					key: String(key),
 					value: JSON.stringify(value),
 				},
 			],
 		})
+		//console.log('RES::::---------------:::::::', res)
 		console.log(`${topic.toUpperCase()} Enqueued`)
 		return res
 	} catch (err) {
